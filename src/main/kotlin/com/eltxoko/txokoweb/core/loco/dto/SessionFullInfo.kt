@@ -3,21 +3,21 @@ package com.eltxoko.txokoweb.core.loco.dto
 import com.eltxoko.txokoweb.core.loco.database.SessionEntity
 import java.time.LocalDate
 
-data class SessionInfo(
+data class SessionFullInfo(
     val date: LocalDate,
     val limit: Int,
-    val maleNumber: Int,
-    val femaleNumber: Int,
+    val males: List<ParticipantInfo>,
+    val females: List<ParticipantInfo>,
 ) {
 
     companion object {
 
         fun of(entity: SessionEntity) = entity.run {
-            SessionInfo(
+            SessionFullInfo(
                 date,
                 limit,
-                maleParticipants.size,
-                femaleParticipants.size,
+                maleParticipants.map { ParticipantInfo.of(it) },
+                femaleParticipants.map { ParticipantInfo.of(it) },
             )
         }
     }

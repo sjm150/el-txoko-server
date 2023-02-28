@@ -9,5 +9,4 @@ class TxokoWebApplicationTests {
 	@Test
 	fun contextLoads() {
 	}
-
 }
