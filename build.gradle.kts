@@ -7,6 +7,7 @@ plugins {
 	kotlin("plugin.spring") version "1.7.22"
 	kotlin("plugin.jpa") version "1.7.22"
 	kotlin("kapt") version "1.7.22"
+	id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
 
 group = "com.eltxoko"
