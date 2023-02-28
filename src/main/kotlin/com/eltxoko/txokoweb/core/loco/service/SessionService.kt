@@ -7,7 +7,6 @@ import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
 import org.springframework.stereotype.Service
 
-@Service
 interface SessionService {
     fun getSessionInfoById(sessionId: Long): SessionInfo
     fun getSessionInfoByDate(dto: DateDto): SessionInfo
@@ -18,6 +17,7 @@ interface SessionService {
     fun getSessionFullInfos(dto: DateDto): SessionInfo
 }
 
+@Service
 class SessionServiceImpl(
     private val sessionRepository: SessionRepository,
 ) : SessionService {
@@ -49,5 +49,4 @@ class SessionServiceImpl(
     override fun getSessionFullInfos(dto: DateDto): SessionInfo {
         TODO("Not yet implemented")
     }
-
 }
