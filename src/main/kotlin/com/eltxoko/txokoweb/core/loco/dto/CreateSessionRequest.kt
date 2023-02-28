@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat
 
 data class CreateSessionRequest(
     @field:DateTimeFormat(pattern = "yyyy-MM-dd")
-    val date: String,
+    val openDate: String,
     @field:Positive
-    val limit: Int,
+    val pairLimit: Int,
 )

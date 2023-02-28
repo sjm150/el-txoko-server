@@ -6,8 +6,19 @@ plugins {
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
 	kotlin("plugin.jpa") version "1.7.22"
+	kotlin("plugin.allopen") version "1.3.71"
+	kotlin("plugin.noarg") version "1.3.71"
 	kotlin("kapt") version "1.7.22"
 	id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+}
+
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+}
+
+noArg {
+	annotation("jakarta.persistence.Entity")
 }
 
 group = "com.eltxoko"

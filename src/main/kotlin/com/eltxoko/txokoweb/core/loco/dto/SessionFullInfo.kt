@@ -4,8 +4,8 @@ import com.eltxoko.txokoweb.core.loco.database.SessionEntity
 import java.time.LocalDate
 
 data class SessionFullInfo(
-    val date: LocalDate,
-    val limit: Int,
+    val openDate: LocalDate,
+    val pairLimit: Int,
     val males: List<ParticipantInfo>,
     val females: List<ParticipantInfo>,
 ) {
@@ -14,8 +14,8 @@ data class SessionFullInfo(
 
         fun of(entity: SessionEntity) = entity.run {
             SessionFullInfo(
-                date,
-                limit,
+                openDate,
+                pairLimit,
                 maleParticipants.map { ParticipantInfo.of(it) },
                 femaleParticipants.map { ParticipantInfo.of(it) },
             )
