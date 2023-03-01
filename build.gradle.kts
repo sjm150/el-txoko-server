@@ -12,6 +12,13 @@ plugins {
 	id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
 
+ktlint {
+	filter {
+		exclude("build.gradle.kts")
+		include("**/kotlin/**")
+	}
+}
+
 allOpen {
 	annotation("jakarta.persistence.Entity")
 	annotation("jakarta.persistence.MappedSuperclass")
