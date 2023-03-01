@@ -16,8 +16,8 @@ data class SessionInfo(
             SessionInfo(
                 openDate,
                 pairLimit,
-                maleParticipants.size,
-                femaleParticipants.size,
+                maleNumber,
+                femaleNumber,
             )
         }
     }

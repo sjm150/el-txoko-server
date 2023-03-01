@@ -22,19 +22,19 @@ class SessionController(
     fun getSessionInfoById(
         @PathVariable sessionId: Long,
     ): SessionInfo {
-        TODO()
+        return sessionService.getSessionInfoById(sessionId)
     }
 
     @GetMapping("/api/session")
     fun getSessionInfoByDate(
         @Valid @RequestBody dto: DateDto,
     ): SessionInfo {
-        TODO()
+        return sessionService.getSessionInfoByDate(dto)
     }
 
     @GetMapping("/api/sessions")
     fun getSessionInfos(): Page<SessionInfo> {
-        TODO()
+        return getSessionInfos()
     }
 
     // TODO: session handling APIs must be OG only
@@ -43,26 +43,25 @@ class SessionController(
     fun createSession(
         @Valid @RequestBody request: CreateSessionRequest,
     ): SessionFullInfo {
-        TODO()
+        return sessionService.createSession(request)
     }
 
     @GetMapping("/api/admin/session/{sessionId}")
     fun getSessionFullInfoById(
         @PathVariable sessionId: Long,
     ): SessionFullInfo {
-        TODO()
+        return getSessionFullInfoById(sessionId)
     }
 
     @GetMapping("/api/admin/session")
     fun getSessionFullInfoByDate(
         @Valid @RequestBody dto: DateDto,
     ): SessionFullInfo {
-        TODO()
+        return getSessionFullInfoByDate(dto)
     }
 
     @GetMapping("/api/admin/sessions")
     fun getSessionFullInfos(): Page<SessionInfo> {
-        TODO()
+        return getSessionFullInfos()
     }
-
 }

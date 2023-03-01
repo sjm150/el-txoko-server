@@ -13,7 +13,9 @@ class SessionEntity(
     val openDate: LocalDate,
     val pairLimit: Int,
     @OneToMany(mappedBy = "session", cascade = [CascadeType.REMOVE])
-    val maleParticipants: List<ParticipantEntity> = mutableListOf(),
+    var maleParticipants: MutableList<ParticipantEntity> = mutableListOf(),
+    val maleNumber: Int = 0,
     @OneToMany(mappedBy = "session", cascade = [CascadeType.REMOVE])
-    val femaleParticipants: List<ParticipantEntity> = mutableListOf(),
+    var femaleParticipants: MutableList<ParticipantEntity> = mutableListOf(),
+    val femaleNumber: Int = 0,
 ) : BaseTimeEntity()
