@@ -13,7 +13,7 @@ class SessionEntity(
     val openDate: LocalDate,
     val pairLimit: Int,
     @OneToMany(mappedBy = "session", cascade = [CascadeType.REMOVE])
-    val maleParticipants: List<ParticipantEntity>,
+    val maleParticipants: List<ParticipantEntity> = mutableListOf(),
     @OneToMany(mappedBy = "session", cascade = [CascadeType.REMOVE])
-    val femaleParticipants: List<ParticipantEntity>,
+    val femaleParticipants: List<ParticipantEntity> = mutableListOf(),
 ) : BaseTimeEntity()
