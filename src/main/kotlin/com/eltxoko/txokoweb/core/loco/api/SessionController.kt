@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -33,8 +34,11 @@ class SessionController(
     }
 
     @GetMapping("/api/sessions")
-    fun getSessionInfos(): Page<SessionInfo> {
-        return getSessionInfos()
+    fun getSessionInfos(
+        @RequestParam(required = false, value = "page", defaultValue = "0") page: Int,
+        @RequestParam(required = false, value = "size", defaultValue = "10") size: Int,
+    ): Page<SessionInfo> {
+        return sessionService.getSessionInfos(page, size)
     }
 
     // TODO: session handling APIs must be OG only
@@ -50,18 +54,21 @@ class SessionController(
     fun getSessionFullInfoById(
         @PathVariable sessionId: Long,
     ): SessionFullInfo {
-        return getSessionFullInfoById(sessionId)
+        return sessionService.getSessionFullInfoById(sessionId)
     }
 
     @GetMapping("/api/admin/session")
     fun getSessionFullInfoByDate(
         @Valid @RequestBody dto: DateDto,
     ): SessionFullInfo {
-        return getSessionFullInfoByDate(dto)
+        return sessionService.getSessionFullInfoByDate(dto)
     }
 
     @GetMapping("/api/admin/sessions")
-    fun getSessionFullInfos(): Page<SessionInfo> {
-        return getSessionFullInfos()
+    fun getSessionFullInfos(
+        @RequestParam(required = false, value = "page", defaultValue = "0") page: Int,
+        @RequestParam(required = false, value = "size", defaultValue = "10") size: Int,
+    ): Page<SessionFullInfo> {
+        return sessionService.getSessionFullInfos(page, size)
     }
 }

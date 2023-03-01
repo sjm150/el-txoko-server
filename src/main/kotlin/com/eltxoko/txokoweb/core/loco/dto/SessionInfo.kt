@@ -4,6 +4,7 @@ import com.eltxoko.txokoweb.core.loco.database.SessionEntity
 import java.time.LocalDate
 
 data class SessionInfo(
+    val sessionId: Long,
     val openDate: LocalDate,
     val pairLimit: Int,
     val maleNumber: Int,
@@ -14,6 +15,7 @@ data class SessionInfo(
 
         fun of(entity: SessionEntity) = entity.run {
             SessionInfo(
+                id,
                 openDate,
                 pairLimit,
                 maleNumber,
