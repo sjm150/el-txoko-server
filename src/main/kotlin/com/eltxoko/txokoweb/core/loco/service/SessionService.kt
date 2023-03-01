@@ -21,6 +21,7 @@ interface SessionService {
     fun getSessionFullInfoById(sessionId: Long): SessionFullInfo
     fun getSessionFullInfoByDate(dto: DateDto): SessionFullInfo
     fun getSessionFullInfos(page: Int, size: Int): Page<SessionFullInfo>
+    fun getSessionEntity(sessionId: Long): SessionEntity
 }
 
 @Service
@@ -62,6 +63,10 @@ class SessionServiceImpl(
         return sessionRepository.findAllPageableWithParticipants(PageRequest.of(page, size)).map {
             SessionFullInfo.of(it)
         }
+    }
+
+    override fun getSessionEntity(sessionId: Long): SessionEntity {
+        return findSessionEntityWithParticipants(sessionId)
     }
 
     private fun findSessionEntity(sessionId: Long): SessionEntity {
