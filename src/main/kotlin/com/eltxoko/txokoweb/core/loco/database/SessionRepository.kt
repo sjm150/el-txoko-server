@@ -12,12 +12,12 @@ import java.time.LocalDate
 
 interface SessionRepository : JpaRepository<SessionEntity, Long>, SessionRepositorySupport {
     fun findByOpenDate(date: LocalDate): SessionEntity?
-    fun findAllPageable(pageable: Pageable): Page<SessionEntity>
 }
 
 interface SessionRepositorySupport {
     fun findByIdWithParticipants(id: Long): SessionEntity?
     fun findByOpenDateWithParticipants(date: LocalDate): SessionEntity?
+    fun findAllPageable(pageable: Pageable): Page<SessionEntity>
     fun findAllPageableWithParticipants(pageable: Pageable): Page<SessionEntity>
 }
 
@@ -46,6 +46,17 @@ class SessionRepositorySupportImpl(
         sessionEntity?.let { joinParticipants(it) }
 
         return sessionEntity
+    }
+
+    override fun findAllPageable(pageable: Pageable): Page<SessionEntity> {
+        val sessionEntities = queryFactory
+            .selectFrom(sessionEntity)
+            .orderBy(sessionEntity.id.desc())
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .fetch()
+
+        return PageImpl(sessionEntities, pageable, sessionEntities.size.toLong())
     }
 
     override fun findAllPageableWithParticipants(pageable: Pageable): Page<SessionEntity> {

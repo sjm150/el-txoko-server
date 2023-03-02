@@ -21,7 +21,7 @@ class ParticipantController(
         @PathVariable sessionId: Long,
         @Valid @RequestBody request: AddParticipantRequest
     ): ParticipantInfo {
-        return participantService.addParticipant(request)
+        return participantService.addParticipant(sessionId, request)
     }
 
     // TODO: OG only
