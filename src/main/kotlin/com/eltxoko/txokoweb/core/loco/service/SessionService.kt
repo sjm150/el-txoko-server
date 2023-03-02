@@ -18,6 +18,7 @@ interface SessionService {
     fun getSessionInfoByDate(dto: DateDto): SessionInfo
     fun getSessionInfos(page: Int, size: Int): Page<SessionInfo>
     fun createSession(request: CreateSessionRequest): SessionFullInfo
+    fun deleteSession(sessionId: Long): SessionFullInfo
     fun getSessionFullInfoById(sessionId: Long): SessionFullInfo
     fun getSessionFullInfoByDate(dto: DateDto): SessionFullInfo
     fun getSessionFullInfos(page: Int, size: Int): Page<SessionFullInfo>
@@ -47,6 +48,13 @@ class SessionServiceImpl(
         val sessionEntity = sessionRepository.save(
             SessionEntity(request.openDate, request.pairLimit)
         )
+
+        return SessionFullInfo.of(sessionEntity)
+    }
+
+    override fun deleteSession(sessionId: Long): SessionFullInfo {
+        val sessionEntity = findSessionEntityWithParticipants(sessionId)
+        sessionRepository.delete(sessionEntity)
 
         return SessionFullInfo.of(sessionEntity)
     }

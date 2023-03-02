@@ -7,6 +7,7 @@ import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
 import com.eltxoko.txokoweb.core.loco.service.SessionService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -48,6 +49,13 @@ class SessionController(
         @Valid @RequestBody request: CreateSessionRequest,
     ): SessionFullInfo {
         return sessionService.createSession(request)
+    }
+
+    @DeleteMapping("/api/admin/session/{sessionId}")
+    fun deleteSession(
+        @PathVariable sessionId: Long,
+    ): SessionFullInfo {
+        return sessionService.deleteSession(sessionId)
     }
 
     @GetMapping("/api/admin/session/{sessionId}")
