@@ -21,20 +21,28 @@ class ParticipantServiceImpl(
     private val sessionService: SessionService,
 ) : ParticipantService {
 
+    private val phoneNumberRegex = "010-\\d{4}-\\d{4}".toRegex()
+
     @Transactional
     override fun addParticipant(sessionId: Long, request: AddParticipantRequest): ParticipantInfo {
-        val session = sessionService.getSessionEntity(sessionId)
+        if (!request.phoneNumber.matches(phoneNumberRegex)) throw Exception400("올바르지 않은 형식의 연락처입니다.")
 
+        val session = sessionService.getSessionEntity(sessionId)
         session.run {
-            if (request.isMale) maleParticipants else femaleParticipants
-                .let {
-                    if (it.size >= pairLimit) {
-                        throw Exception400("인원 마감되었습니다.")
-                    }
-                    if (it.find { entity -> entity.email == request.email } != null) {
-                        throw Exception409("이미 참여 신청한 이메일입니다.")
-                    }
+            (if (request.isMale) maleParticipants else femaleParticipants).let {
+                if (it.size >= pairLimit) {
+                    throw Exception400("인원 마감되었습니다.")
                 }
+            }
+
+            (maleParticipants + femaleParticipants).let {
+                if (it.find { entity -> entity.email == request.email } != null) {
+                    throw Exception409("이미 참여 신청한 이메일입니다.")
+                }
+                if (it.find { entity -> entity.phoneNumber == request.phoneNumber } != null) {
+                    throw Exception409("이미 참여 신청한 연락처입니다.")
+                }
+            }
         }
 
         val participant = request.run {
