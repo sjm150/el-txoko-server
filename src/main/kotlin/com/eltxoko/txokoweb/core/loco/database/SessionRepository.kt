@@ -2,6 +2,8 @@ package com.eltxoko.txokoweb.core.loco.database
 
 import com.eltxoko.txokoweb.core.loco.database.QParticipantEntity.participantEntity
 import com.eltxoko.txokoweb.core.loco.database.QSessionEntity.sessionEntity
+import com.eltxoko.txokoweb.core.loco.dto.ParticipantInfo
+import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -18,7 +20,7 @@ interface SessionRepositorySupport {
     fun findByIdWithParticipants(id: Long): SessionEntity?
     fun findByOpenDateWithParticipants(date: LocalDate): SessionEntity?
     fun findAllPageable(pageable: Pageable): Page<SessionEntity>
-    fun findAllPageableWithParticipants(pageable: Pageable): Page<SessionEntity>
+    fun findAllFullInfoPageableWithParticipants(pageable: Pageable): Page<SessionFullInfo>
 }
 
 @Component
@@ -59,13 +61,14 @@ class SessionRepositorySupportImpl(
         return PageImpl(sessionEntities, pageable, sessionEntities.size.toLong())
     }
 
-    override fun findAllPageableWithParticipants(pageable: Pageable): Page<SessionEntity> {
+    override fun findAllFullInfoPageableWithParticipants(pageable: Pageable): Page<SessionFullInfo> {
         val sessionEntities = queryFactory
             .selectFrom(sessionEntity)
             .orderBy(sessionEntity.id.desc())
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
             .fetch()
+            .reversed()
 
         val sessionIds = sessionEntities.map { it.id }
 
@@ -73,21 +76,27 @@ class SessionRepositorySupportImpl(
             .selectFrom(participantEntity)
             .where(participantEntity.session.id.`in`(sessionIds))
             .orderBy(
-                participantEntity.session.id.asc(),
-                participantEntity.isMale.asc()
+                participantEntity.session.id.desc(),
+                participantEntity.isMale.asc(),
+                participantEntity.id.desc()
             )
             .fetch()
 
+        val sessionFullInfos = mutableListOf<SessionFullInfo>()
         sessionEntities.forEach {
-            for (i in 0 until it.maleNumber) {
-                it.maleParticipants.add(participantEntities.removeLast())
-            }
-            for (i in 0 until it.femaleNumber) {
-                it.femaleParticipants.add(participantEntities.removeLast())
+            sessionFullInfos.add(SessionFullInfo.empty(it))
+
+            sessionFullInfos.last().run {
+                for (i in 0 until it.maleNumber) {
+                    males.add(ParticipantInfo.of(participantEntities.removeLast()))
+                }
+                for (i in 0 until it.femaleNumber) {
+                    females.add(ParticipantInfo.of(participantEntities.removeLast()))
+                }
             }
         }
 
-        return PageImpl(sessionEntities, pageable, sessionEntities.size.toLong())
+        return PageImpl(sessionFullInfos, pageable, sessionFullInfos.size.toLong())
     }
 
     private fun joinParticipants(sessionEntity: SessionEntity) {

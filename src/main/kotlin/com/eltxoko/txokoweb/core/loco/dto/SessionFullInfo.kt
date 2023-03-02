@@ -7,8 +7,8 @@ data class SessionFullInfo(
     val sessionId: Long,
     val openDate: LocalDate,
     val pairLimit: Int,
-    val males: List<ParticipantInfo>,
-    val females: List<ParticipantInfo>,
+    val males: MutableList<ParticipantInfo> = mutableListOf(),
+    val females: MutableList<ParticipantInfo> = mutableListOf(),
 ) {
 
     companion object {
@@ -18,8 +18,14 @@ data class SessionFullInfo(
                 id,
                 openDate,
                 pairLimit,
-                maleParticipants.map { ParticipantInfo.of(it) },
-                femaleParticipants.map { ParticipantInfo.of(it) },
+                maleParticipants.map { ParticipantInfo.of(it) }.toMutableList(),
+                femaleParticipants.map { ParticipantInfo.of(it) }.toMutableList(),
+            )
+        }
+
+        fun empty(entity: SessionEntity) = entity.run {
+            SessionFullInfo(
+                id, openDate, pairLimit
             )
         }
     }

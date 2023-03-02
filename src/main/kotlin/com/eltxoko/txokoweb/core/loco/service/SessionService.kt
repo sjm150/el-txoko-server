@@ -68,9 +68,7 @@ class SessionServiceImpl(
     }
 
     override fun getSessionFullInfos(page: Int, size: Int): Page<SessionFullInfo> {
-        return sessionRepository.findAllPageableWithParticipants(PageRequest.of(page, size)).map {
-            SessionFullInfo.of(it)
-        }
+        return sessionRepository.findAllFullInfoPageableWithParticipants(PageRequest.of(page, size))
     }
 
     override fun getSessionEntity(sessionId: Long): SessionEntity {
