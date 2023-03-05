@@ -44,7 +44,6 @@ class SessionController(
 
     // TODO: session handling APIs must be OG only
 
-    // TODO: 제약 추가 - 하루에 하나만 가능
     @PostMapping("/api/admin/session")
     fun createSession(
         @Valid @RequestBody request: CreateSessionRequest,

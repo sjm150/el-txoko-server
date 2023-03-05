@@ -7,6 +7,8 @@ import com.eltxoko.txokoweb.core.loco.dto.CreateSessionRequest
 import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
 import com.eltxoko.txokoweb.exception.Exception404
+import com.eltxoko.txokoweb.exception.Exception409
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
@@ -45,9 +47,13 @@ class SessionServiceImpl(
     }
 
     override fun createSession(request: CreateSessionRequest): SessionFullInfo {
-        val sessionEntity = sessionRepository.save(
-            SessionEntity(request.openDate, request.pairLimit)
-        )
+        val sessionEntity = try {
+            sessionRepository.save(
+                SessionEntity(request.openDate, request.pairLimit)
+            )
+        } catch (e: DataIntegrityViolationException) {
+            throw Exception409("해당 날짜에 열린 세션이 이미 존재합니다.")
+        }
 
         return SessionFullInfo.of(sessionEntity)
     }
