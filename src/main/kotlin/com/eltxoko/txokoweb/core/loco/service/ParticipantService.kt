@@ -8,6 +8,7 @@ import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.eltxoko.txokoweb.exception.Exception400
 import com.eltxoko.txokoweb.exception.Exception409
 import jakarta.transaction.Transactional
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 interface ParticipantService {
@@ -19,6 +20,7 @@ interface ParticipantService {
 class ParticipantServiceImpl(
     private val participantRepository: ParticipantRepository,
     private val sessionService: SessionService,
+    private val passwordEncoder: PasswordEncoder,
 ) : ParticipantService {
 
     private val phoneNumberRegex = "010-\\d{4}-\\d{4}".toRegex()
@@ -48,7 +50,7 @@ class ParticipantServiceImpl(
         val participant = request.run {
             participantRepository.save(
                 ParticipantEntity(
-                    email, name, phoneNumber, isMale, session
+                    email, name, phoneNumber, isMale, age, occupation, description, passwordEncoder.encode(password), session
                 )
             )
         }

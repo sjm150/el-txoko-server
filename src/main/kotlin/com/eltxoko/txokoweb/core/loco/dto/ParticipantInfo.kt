@@ -7,12 +7,15 @@ data class ParticipantInfo(
     val email: String,
     val name: String,
     val phoneNumber: String,
+    val age: Int,
+    val occupation: String,
+    val description: String,
 ) {
 
     companion object {
         fun of(entity: ParticipantEntity) = entity.run {
             ParticipantInfo(
-                id, email, name, phoneNumber
+                id, email, name, phoneNumber, age, occupation, description
             )
         }
     }
