@@ -34,8 +34,6 @@ class SessionController(
         return sessionService.getSessionInfoByDate(dto)
     }
 
-    // TODO: 오늘 포함해서 이후 것만 디스플레이
-    // TODO: 임박한 것 우선으로
     @GetMapping("/api/sessions")
     fun getSessionInfos(
         @RequestParam(required = false, value = "page", defaultValue = "0") page: Int,

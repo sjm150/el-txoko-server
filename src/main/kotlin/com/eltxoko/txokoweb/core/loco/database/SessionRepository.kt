@@ -19,7 +19,7 @@ interface SessionRepository : JpaRepository<SessionEntity, Long>, SessionReposit
 interface SessionRepositorySupport {
     fun findByIdWithParticipants(id: Long): SessionEntity?
     fun findByOpenDateWithParticipants(date: LocalDate): SessionEntity?
-    fun findAllPageable(pageable: Pageable): Page<SessionEntity>
+    fun findAllAfterNowPageable(now: LocalDate, pageable: Pageable): Page<SessionEntity>
     fun findAllFullInfoPageableWithParticipants(pageable: Pageable): Page<SessionFullInfo>
 }
 
@@ -50,10 +50,11 @@ class SessionRepositorySupportImpl(
         return sessionEntity
     }
 
-    override fun findAllPageable(pageable: Pageable): Page<SessionEntity> {
+    override fun findAllAfterNowPageable(now: LocalDate, pageable: Pageable): Page<SessionEntity> {
         val sessionEntities = queryFactory
             .selectFrom(sessionEntity)
-            .orderBy(sessionEntity.id.desc())
+            .where(sessionEntity.openDate.goe(now))
+            .orderBy(sessionEntity.id.asc())
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
             .fetch()

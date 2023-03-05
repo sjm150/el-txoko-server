@@ -39,7 +39,7 @@ class SessionServiceImpl(
     }
 
     override fun getSessionInfos(page: Int, size: Int): Page<SessionInfo> {
-        return sessionRepository.findAllPageable(PageRequest.of(page, size)).map {
+        return sessionRepository.findAllAfterNowPageable(LocalDate.now(), PageRequest.of(page, size)).map {
             SessionInfo.of(it)
         }
     }
