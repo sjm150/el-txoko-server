@@ -24,6 +24,8 @@ class ParticipantController(
         return participantService.addParticipant(sessionId, request)
     }
 
+    // TODO: 신청 조회 추가
+
     // TODO: OG only
     @DeleteMapping("/api/session/{sessionId}/{participantId}")
     fun deleteParticipant(

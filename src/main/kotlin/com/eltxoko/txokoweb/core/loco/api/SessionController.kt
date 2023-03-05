@@ -34,6 +34,8 @@ class SessionController(
         return sessionService.getSessionInfoByDate(dto)
     }
 
+    // TODO: 오늘 포함해서 이후 것만 디스플레이
+    // TODO: 임박한 것 우선으로
     @GetMapping("/api/sessions")
     fun getSessionInfos(
         @RequestParam(required = false, value = "page", defaultValue = "0") page: Int,
@@ -44,6 +46,7 @@ class SessionController(
 
     // TODO: session handling APIs must be OG only
 
+    // TODO: 제약 추가 - 하루에 하나만 가능
     @PostMapping("/api/admin/session")
     fun createSession(
         @Valid @RequestBody request: CreateSessionRequest,
@@ -79,4 +82,6 @@ class SessionController(
     ): Page<SessionFullInfo> {
         return sessionService.getSessionFullInfos(page, size)
     }
+
+    // TODO: 날짜범위 from to 받아서 해당 범위 csv로 주기
 }
