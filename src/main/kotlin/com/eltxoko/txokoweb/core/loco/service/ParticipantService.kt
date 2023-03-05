@@ -3,9 +3,12 @@ package com.eltxoko.txokoweb.core.loco.service
 import com.eltxoko.txokoweb.core.loco.database.ParticipantEntity
 import com.eltxoko.txokoweb.core.loco.database.ParticipantRepository
 import com.eltxoko.txokoweb.core.loco.dto.AddParticipantRequest
+import com.eltxoko.txokoweb.core.loco.dto.CheckParticipationRequest
 import com.eltxoko.txokoweb.core.loco.dto.ParticipantInfo
 import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.eltxoko.txokoweb.exception.Exception400
+import com.eltxoko.txokoweb.exception.Exception401
+import com.eltxoko.txokoweb.exception.Exception404
 import com.eltxoko.txokoweb.exception.Exception409
 import jakarta.transaction.Transactional
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service
 
 interface ParticipantService {
     fun addParticipant(sessionId: Long, request: AddParticipantRequest): ParticipantInfo
+    fun checkParticipation(sessionId: Long, request: CheckParticipationRequest): ParticipantInfo
     fun deleteParticipant(sessionId: Long, participantId: Long): SessionFullInfo
 }
 
@@ -62,6 +66,17 @@ class ParticipantServiceImpl(
         }
 
         return ParticipantInfo.of(participant)
+    }
+
+    override fun checkParticipation(sessionId: Long, request: CheckParticipationRequest): ParticipantInfo {
+        val participant = participantRepository.findBySessionIdAndEmail(sessionId, request.email)
+            ?: throw Exception404("해당 이메일로 해당 세션에 신청한 참가자가 존재하지 않습니다.")
+
+        if (passwordEncoder.matches(request.password, participant.password)) {
+            return ParticipantInfo.of(participant)
+        } else {
+            throw Exception401("비밀번호가 일치하지 않습니다.")
+        }
     }
 
     @Transactional
