@@ -2,6 +2,7 @@ package com.eltxoko.txokoweb.core.loco.api
 
 import com.eltxoko.txokoweb.common.DateDto
 import com.eltxoko.txokoweb.core.loco.dto.CreateSessionRequest
+import com.eltxoko.txokoweb.core.loco.dto.GetSessionCsvRequest
 import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
 import com.eltxoko.txokoweb.core.loco.service.SessionService
@@ -81,4 +82,10 @@ class SessionController(
     }
 
     // TODO: 날짜범위 from to 받아서 해당 범위 csv로 주기
+    @GetMapping("/api/admin/sessions/csv")
+    fun getSessionFullInfoCsv(
+        @Valid @RequestBody request: GetSessionCsvRequest,
+    ): String {
+        return sessionService.getSessionCsv(request)
+    }
 }

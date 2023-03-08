@@ -4,6 +4,7 @@ import com.eltxoko.txokoweb.common.DateDto
 import com.eltxoko.txokoweb.core.loco.database.SessionEntity
 import com.eltxoko.txokoweb.core.loco.database.SessionRepository
 import com.eltxoko.txokoweb.core.loco.dto.CreateSessionRequest
+import com.eltxoko.txokoweb.core.loco.dto.GetSessionCsvRequest
 import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
 import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
 import com.eltxoko.txokoweb.exception.Exception404
@@ -24,6 +25,7 @@ interface SessionService {
     fun getSessionFullInfoById(sessionId: Long): SessionFullInfo
     fun getSessionFullInfoByDate(dto: DateDto): SessionFullInfo
     fun getSessionFullInfos(page: Int, size: Int): Page<SessionFullInfo>
+    fun getSessionCsv(request: GetSessionCsvRequest): String
     fun getSessionEntity(sessionId: Long): SessionEntity
 }
 
@@ -31,6 +33,8 @@ interface SessionService {
 class SessionServiceImpl(
     private val sessionRepository: SessionRepository,
 ) : SessionService {
+
+    private val csvTemplate = "ID,타임스탬프,참여하고 싶으신 날,성별,\"나이, 하는일\",연락처,성함,알게된 경로,책임자,이메일 주소\n"
 
     override fun getSessionInfoById(sessionId: Long): SessionInfo {
         return SessionInfo.of(findSessionEntity(sessionId))
@@ -75,6 +79,17 @@ class SessionServiceImpl(
 
     override fun getSessionFullInfos(page: Int, size: Int): Page<SessionFullInfo> {
         return sessionRepository.findAllFullInfoPageableWithParticipants(PageRequest.of(page, size))
+    }
+
+    override fun getSessionCsv(request: GetSessionCsvRequest): String {
+        var csv = csvTemplate
+
+        sessionRepository.findAllFullInfoByDateRangeWithParticipants(request.from, request.to).forEach { session ->
+            session.females.forEach { csv += it.toCsvLine(session.openDate) }
+            session.males.forEach { csv += it.toCsvLine(session.openDate) }
+        }
+
+        return csv
     }
 
     override fun getSessionEntity(sessionId: Long): SessionEntity {

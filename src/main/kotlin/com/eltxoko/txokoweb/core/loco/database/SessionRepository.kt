@@ -21,6 +21,7 @@ interface SessionRepositorySupport {
     fun findByOpenDateWithParticipants(date: LocalDate): SessionEntity?
     fun findAllAfterNowPageable(now: LocalDate, pageable: Pageable): Page<SessionEntity>
     fun findAllFullInfoPageableWithParticipants(pageable: Pageable): Page<SessionFullInfo>
+    fun findAllFullInfoByDateRangeWithParticipants(from: LocalDate, to: LocalDate?): List<SessionFullInfo>
 }
 
 @Component
@@ -71,6 +72,32 @@ class SessionRepositorySupportImpl(
             .fetch()
             .reversed()
 
+        val sessionFullInfos = joinParticipants(sessionEntities)
+
+        return PageImpl(sessionFullInfos, pageable, sessionFullInfos.size.toLong())
+    }
+
+    override fun findAllFullInfoByDateRangeWithParticipants(from: LocalDate, to: LocalDate?): List<SessionFullInfo> {
+        val sessionEntities = queryFactory
+            .selectFrom(sessionEntity)
+            .where(sessionEntity.openDate.between(from, to))
+            .orderBy(sessionEntity.id.asc())
+            .fetch()
+
+        return joinParticipants(sessionEntities)
+    }
+
+    private fun joinParticipants(sessionEntity: SessionEntity) {
+        val participantEntities = queryFactory
+            .selectFrom(participantEntity)
+            .where(participantEntity.session.id.eq(sessionEntity.id))
+            .fetch()
+
+        sessionEntity.maleParticipants = participantEntities.filter { it.isMale }.toMutableList()
+        sessionEntity.femaleParticipants = participantEntities.filter { !it.isMale }.toMutableList()
+    }
+
+    private fun joinParticipants(sessionEntities: List<SessionEntity>): List<SessionFullInfo> {
         val sessionIds = sessionEntities.map { it.id }
 
         val participantEntities = queryFactory
@@ -97,16 +124,6 @@ class SessionRepositorySupportImpl(
             }
         }
 
-        return PageImpl(sessionFullInfos, pageable, sessionFullInfos.size.toLong())
-    }
-
-    private fun joinParticipants(sessionEntity: SessionEntity) {
-        val participantEntities = queryFactory
-            .selectFrom(participantEntity)
-            .where(participantEntity.session.id.eq(sessionEntity.id))
-            .fetch()
-
-        sessionEntity.maleParticipants = participantEntities.filter { it.isMale }.toMutableList()
-        sessionEntity.femaleParticipants = participantEntities.filter { !it.isMale }.toMutableList()
+        return sessionFullInfos
     }
 }

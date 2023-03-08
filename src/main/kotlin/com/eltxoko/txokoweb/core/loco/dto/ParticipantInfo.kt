@@ -1,22 +1,31 @@
 package com.eltxoko.txokoweb.core.loco.dto
 
 import com.eltxoko.txokoweb.core.loco.database.ParticipantEntity
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 data class ParticipantInfo(
     val participantId: Long,
-    val email: String,
-    val name: String,
-    val phoneNumber: String,
+    val timestamp: String,
     val isMale: Boolean,
     val age: Int,
     val occupation: String,
-    val description: String,
+    val phoneNumber: String,
+    val name: String,
+    val recommendation: String,
+    val email: String,
 ) {
 
+    fun toCsvLine(openDate: LocalDate): String {
+        return "$participantId,$timestamp,$openDate,${if (isMale) "남성" else "여성"},\"$age, $occupation\",$phoneNumber,$name,$recommendation,,$email\n"
+    }
+
     companion object {
+        private val formatter = DateTimeFormatter.ofPattern("YYYY. M. d a h:m:s")
+
         fun of(entity: ParticipantEntity) = entity.run {
             ParticipantInfo(
-                id, email, name, phoneNumber, isMale, age, occupation, description
+                id, formatter.format(createdAt!!), isMale, age, occupation, phoneNumber, name, recommendation, email
             )
         }
     }

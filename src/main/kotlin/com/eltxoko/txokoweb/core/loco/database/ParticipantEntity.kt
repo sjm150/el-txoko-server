@@ -21,7 +21,7 @@ class ParticipantEntity(
     @field:Column(length = 15)
     val occupation: String,
     @field:Column(length = 63)
-    val description: String,
+    val recommendation: String,
     val password: String,
     @ManyToOne
     @JoinColumn(name = "session_id")
