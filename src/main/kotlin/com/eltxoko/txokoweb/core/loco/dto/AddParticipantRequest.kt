@@ -9,6 +9,7 @@ data class AddParticipantRequest(
     @field:Email(message = "올바르지 않은 형식의 이메일입니다.")
     @field:Length(max = 31)
     val email: String,
+    val code: String,
     @field:NotBlank(message = "이름을 입력해 주세요.")
     @field:Length(max = 31)
     val name: String,
@@ -22,7 +23,7 @@ data class AddParticipantRequest(
     val occupation: String,
     @field:NotBlank(message = "알게된 경로를 입력해 주세요.")
     @field:Length(max = 63)
-    val description: String,
+    val recommendation: String,
     @field:Length(min = 4, max = 31)
     val password: String,
 )

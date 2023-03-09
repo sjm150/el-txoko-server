@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
 interface ParticipantService {
@@ -42,8 +43,18 @@ class ParticipantServiceImpl(
     override fun addParticipant(sessionId: Long, request: AddParticipantRequest): ParticipantInfo {
         if (!request.phoneNumber.matches(phoneNumberRegex)) throw Exception400("올바르지 않은 형식의 연락처입니다.")
 
+        if (redisEmailVerificationTemplate.opsForValue().get(request.email) == request.code) {
+            redisEmailVerificationTemplate.opsForValue().getAndDelete(request.email)
+        } else {
+            throw Exception400("인증코드가 일치하지 않습니다.")
+        }
+
         val session = sessionService.getSessionEntity(sessionId)
         session.run {
+            if (openDate < LocalDate.now()) {
+                throw Exception400("참여 기한이 지났습니다.")
+            }
+
             (if (request.isMale) maleParticipants else femaleParticipants).let {
                 if (it.size >= pairLimit) {
                     throw Exception400("인원 마감되었습니다.")
@@ -63,7 +74,7 @@ class ParticipantServiceImpl(
         val participant = request.run {
             participantRepository.save(
                 ParticipantEntity(
-                    email, name, phoneNumber, isMale, age, occupation, description, passwordEncoder.encode(password), session
+                    email, name, phoneNumber, isMale, age, occupation, recommendation, passwordEncoder.encode(password), session
                 )
             )
         }
