@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length
 
 data class AddParticipantRequest(
     @field:Email(message = "올바르지 않은 형식의 이메일입니다.")
-    @field:Length(max = 15)
+    @field:Length(max = 31)
     val email: String,
     @field:NotBlank(message = "이름을 입력해 주세요.")
     @field:Length(max = 31)

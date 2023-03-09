@@ -2,10 +2,7 @@ package com.eltxoko.txokoweb.core.loco.service
 
 import com.eltxoko.txokoweb.core.loco.database.ParticipantEntity
 import com.eltxoko.txokoweb.core.loco.database.ParticipantRepository
-import com.eltxoko.txokoweb.core.loco.dto.AddParticipantRequest
-import com.eltxoko.txokoweb.core.loco.dto.CheckParticipationRequest
-import com.eltxoko.txokoweb.core.loco.dto.ParticipantInfo
-import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
+import com.eltxoko.txokoweb.core.loco.dto.*
 import com.eltxoko.txokoweb.exception.Exception400
 import com.eltxoko.txokoweb.exception.Exception401
 import com.eltxoko.txokoweb.exception.Exception404
@@ -15,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 interface ParticipantService {
+    fun startEmailVerification(request: EmailVerificationRequest)
     fun addParticipant(sessionId: Long, request: AddParticipantRequest): ParticipantInfo
     fun checkParticipation(sessionId: Long, request: CheckParticipationRequest): ParticipantInfo
     fun deleteParticipant(sessionId: Long, participantId: Long): SessionFullInfo
@@ -23,11 +21,17 @@ interface ParticipantService {
 @Service
 class ParticipantServiceImpl(
     private val participantRepository: ParticipantRepository,
+    private val emailService: EmailService,
     private val sessionService: SessionService,
     private val passwordEncoder: PasswordEncoder,
 ) : ParticipantService {
 
     private val phoneNumberRegex = "010-\\d{4}-\\d{4}".toRegex()
+
+    override fun startEmailVerification(request: EmailVerificationRequest) {
+        val code = emailService.createVerificationCode()
+        emailService.sendVerificationCode(request.email, code)
+    }
 
     @Transactional
     override fun addParticipant(sessionId: Long, request: AddParticipantRequest): ParticipantInfo {
