@@ -1,10 +1,6 @@
 package com.eltxoko.txokoweb.core.loco.api
 
-import com.eltxoko.txokoweb.core.loco.dto.AddParticipantRequest
-import com.eltxoko.txokoweb.core.loco.dto.CheckParticipationRequest
-import com.eltxoko.txokoweb.core.loco.dto.ParticipantInfo
-import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
-import com.eltxoko.txokoweb.core.loco.service.EmailService
+import com.eltxoko.txokoweb.core.loco.dto.*
 import com.eltxoko.txokoweb.core.loco.service.ParticipantService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -16,15 +12,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ParticipantController(
-    private val emailService: EmailService,
     private val participantService: ParticipantService,
 ) {
 
-    @PostMapping("/api/session/verify/{email}")
+    @PostMapping("/api/email-verification")
     fun verifyEmail(
-        @PathVariable email: String,
+        @Valid @RequestBody request: EmailVerificationRequest,
     ): String {
-        emailService.startEmailVerification(email)
+        participantService.startEmailVerification(request)
         return "success"
     }
 

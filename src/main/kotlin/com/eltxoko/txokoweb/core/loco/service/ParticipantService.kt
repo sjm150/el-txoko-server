@@ -8,8 +8,10 @@ import com.eltxoko.txokoweb.exception.Exception401
 import com.eltxoko.txokoweb.exception.Exception404
 import com.eltxoko.txokoweb.exception.Exception409
 import jakarta.transaction.Transactional
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.concurrent.TimeUnit
 
 interface ParticipantService {
     fun startEmailVerification(request: EmailVerificationRequest)
@@ -24,12 +26,15 @@ class ParticipantServiceImpl(
     private val emailService: EmailService,
     private val sessionService: SessionService,
     private val passwordEncoder: PasswordEncoder,
+    private val redisEmailVerificationTemplate: RedisTemplate<String, String>,
 ) : ParticipantService {
 
     private val phoneNumberRegex = "010-\\d{4}-\\d{4}".toRegex()
+    private val verificationSecond = 200L
 
     override fun startEmailVerification(request: EmailVerificationRequest) {
         val code = emailService.createVerificationCode()
+        redisEmailVerificationTemplate.opsForValue().set(request.email, code, verificationSecond, TimeUnit.SECONDS)
         emailService.sendVerificationCode(request.email, code)
     }
 

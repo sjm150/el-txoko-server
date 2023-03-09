@@ -53,6 +53,9 @@ dependencies {
 	// smtp
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 
+	// redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 	// querydsl
 	val querydslVersion = "5.0.0"
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
