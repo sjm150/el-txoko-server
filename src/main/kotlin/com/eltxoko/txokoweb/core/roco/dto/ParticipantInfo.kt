@@ -1,6 +1,6 @@
-package com.eltxoko.txokoweb.core.loco.dto
+package com.eltxoko.txokoweb.core.roco.dto
 
-import com.eltxoko.txokoweb.core.loco.database.ParticipantEntity
+import com.eltxoko.txokoweb.core.roco.database.ParticipantEntity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

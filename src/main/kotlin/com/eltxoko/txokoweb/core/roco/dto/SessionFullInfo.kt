@@ -1,6 +1,6 @@
-package com.eltxoko.txokoweb.core.loco.dto
+package com.eltxoko.txokoweb.core.roco.dto
 
-import com.eltxoko.txokoweb.core.loco.database.SessionEntity
+import com.eltxoko.txokoweb.core.roco.database.SessionEntity
 import java.time.LocalDate
 
 data class SessionFullInfo(

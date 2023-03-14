@@ -1,7 +1,7 @@
-package com.eltxoko.txokoweb.core.loco.api
+package com.eltxoko.txokoweb.core.roco.api
 
-import com.eltxoko.txokoweb.core.loco.dto.*
-import com.eltxoko.txokoweb.core.loco.service.ParticipantService
+import com.eltxoko.txokoweb.core.roco.dto.*
+import com.eltxoko.txokoweb.core.roco.service.ParticipantService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

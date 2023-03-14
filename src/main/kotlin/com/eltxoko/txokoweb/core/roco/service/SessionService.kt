@@ -1,12 +1,12 @@
-package com.eltxoko.txokoweb.core.loco.service
+package com.eltxoko.txokoweb.core.roco.service
 
 import com.eltxoko.txokoweb.common.DateDto
-import com.eltxoko.txokoweb.core.loco.database.SessionEntity
-import com.eltxoko.txokoweb.core.loco.database.SessionRepository
-import com.eltxoko.txokoweb.core.loco.dto.CreateSessionRequest
-import com.eltxoko.txokoweb.core.loco.dto.GetSessionCsvRequest
-import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
-import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
+import com.eltxoko.txokoweb.core.roco.database.SessionEntity
+import com.eltxoko.txokoweb.core.roco.database.SessionRepository
+import com.eltxoko.txokoweb.core.roco.dto.CreateSessionRequest
+import com.eltxoko.txokoweb.core.roco.dto.GetSessionCsvRequest
+import com.eltxoko.txokoweb.core.roco.dto.SessionFullInfo
+import com.eltxoko.txokoweb.core.roco.dto.SessionInfo
 import com.eltxoko.txokoweb.exception.Exception404
 import com.eltxoko.txokoweb.exception.Exception409
 import org.springframework.dao.DataIntegrityViolationException

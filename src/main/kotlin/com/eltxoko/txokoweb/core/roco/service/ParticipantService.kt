@@ -1,8 +1,8 @@
-package com.eltxoko.txokoweb.core.loco.service
+package com.eltxoko.txokoweb.core.roco.service
 
-import com.eltxoko.txokoweb.core.loco.database.ParticipantEntity
-import com.eltxoko.txokoweb.core.loco.database.ParticipantRepository
-import com.eltxoko.txokoweb.core.loco.dto.*
+import com.eltxoko.txokoweb.core.roco.database.ParticipantEntity
+import com.eltxoko.txokoweb.core.roco.database.ParticipantRepository
+import com.eltxoko.txokoweb.core.roco.dto.*
 import com.eltxoko.txokoweb.exception.Exception400
 import com.eltxoko.txokoweb.exception.Exception401
 import com.eltxoko.txokoweb.exception.Exception404

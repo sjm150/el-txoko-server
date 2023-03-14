@@ -1,4 +1,4 @@
-package com.eltxoko.txokoweb.core.loco.dto
+package com.eltxoko.txokoweb.core.roco.dto
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank

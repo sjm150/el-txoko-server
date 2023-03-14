@@ -1,11 +1,11 @@
-package com.eltxoko.txokoweb.core.loco.api
+package com.eltxoko.txokoweb.core.roco.api
 
 import com.eltxoko.txokoweb.common.DateDto
-import com.eltxoko.txokoweb.core.loco.dto.CreateSessionRequest
-import com.eltxoko.txokoweb.core.loco.dto.GetSessionCsvRequest
-import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
-import com.eltxoko.txokoweb.core.loco.dto.SessionInfo
-import com.eltxoko.txokoweb.core.loco.service.SessionService
+import com.eltxoko.txokoweb.core.roco.dto.CreateSessionRequest
+import com.eltxoko.txokoweb.core.roco.dto.GetSessionCsvRequest
+import com.eltxoko.txokoweb.core.roco.dto.SessionFullInfo
+import com.eltxoko.txokoweb.core.roco.dto.SessionInfo
+import com.eltxoko.txokoweb.core.roco.service.SessionService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.DeleteMapping

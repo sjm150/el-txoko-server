@@ -1,4 +1,4 @@
-package com.eltxoko.txokoweb.core.loco.database
+package com.eltxoko.txokoweb.core.roco.database
 
 import com.eltxoko.txokoweb.common.BaseTimeEntity
 import jakarta.persistence.CascadeType
@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 import java.time.LocalDate
 
 @Entity
-@Table(name = "loco_session")
+@Table(name = "roco_session")
 class SessionEntity(
     @field:Column(unique = true)
     val openDate: LocalDate,

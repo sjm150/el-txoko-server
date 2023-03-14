@@ -1,4 +1,4 @@
-package com.eltxoko.txokoweb.core.loco.dto
+package com.eltxoko.txokoweb.core.roco.dto
 
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate

@@ -1,4 +1,4 @@
-package com.eltxoko.txokoweb.core.loco.service
+package com.eltxoko.txokoweb.core.roco.service
 
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender

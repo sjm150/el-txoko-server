@@ -1,9 +1,9 @@
-package com.eltxoko.txokoweb.core.loco.database
+package com.eltxoko.txokoweb.core.roco.database
 
-import com.eltxoko.txokoweb.core.loco.database.QParticipantEntity.participantEntity
-import com.eltxoko.txokoweb.core.loco.database.QSessionEntity.sessionEntity
-import com.eltxoko.txokoweb.core.loco.dto.ParticipantInfo
-import com.eltxoko.txokoweb.core.loco.dto.SessionFullInfo
+import com.eltxoko.txokoweb.core.roco.database.QParticipantEntity.participantEntity
+import com.eltxoko.txokoweb.core.roco.database.QSessionEntity.sessionEntity
+import com.eltxoko.txokoweb.core.roco.dto.ParticipantInfo
+import com.eltxoko.txokoweb.core.roco.dto.SessionFullInfo
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl

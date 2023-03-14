@@ -1,4 +1,4 @@
-package com.eltxoko.txokoweb.core.loco.database
+package com.eltxoko.txokoweb.core.roco.database
 
 import org.springframework.data.jpa.repository.JpaRepository
 
